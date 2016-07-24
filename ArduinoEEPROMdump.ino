@@ -1,17 +1,23 @@
+/* *****************************************************************************
+
+                  Arduino EEPROM dumper
+
+(c) 2016, Maurice Hendrix  (mausy5043)
+***************************************************************************** */
 
 #include <EEPROM.h>
 
 int addr = 0;
 byte value;
 char ascii[17] = "=-EEPROM DUMP-= ";
-                  
+
 void setup() {
   Serial.begin(9600);
-  while (!Serial) 
+  while (!Serial)
   {
     ; // wait for serial port...
   }
-  
+
   for (addr = 0; addr < EEPROM.length(); ++addr)
   {
     if (!(addr % 16))
@@ -20,9 +26,9 @@ void setup() {
       prnHEXval(addr,4);
       Serial.print("\t");
     }
-    
+
     value = EEPROM.read(addr);
-    
+
     if ((value > 0x7F) || (value < 0x20))
     {
       ascii[addr % 16] = '.';
@@ -31,7 +37,7 @@ void setup() {
     {
       ascii[addr % 16] = char(value);
     }
-    
+
     prnHEXval(value,2);
     Serial.print(" ");
   }
