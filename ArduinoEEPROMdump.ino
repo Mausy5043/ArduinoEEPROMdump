@@ -11,7 +11,9 @@ int addr = 0;
 byte value;
 char ascii[17] = "=-EEPROM DUMP-= ";
 
-void setup() {
+void setup() 
+{
+  delay(1000);
   Serial.begin(9600);
   while (!Serial)
   {
@@ -23,7 +25,7 @@ void setup() {
     if (!(addr % 16))
     {
       Serial.println(ascii);
-      prnHEXval(addr,4);
+      prnHEXval(addr, 4);
       Serial.print("\t");
     }
 
@@ -38,21 +40,24 @@ void setup() {
       ascii[addr % 16] = char(value);
     }
 
-    prnHEXval(value,2);
+    prnHEXval(value, 2);
     Serial.print(" ");
   }
   Serial.println(ascii);
+  Serial.println(F("==READY=="));
 }
 
-void loop() {
-  // no code here
+void loop() 
+{
+  ; // no code here
 }
 
-void prnHEXval(int num, int prec) {
-     char tmp[16];
-     char format[128];
+void prnHEXval(int num, int nibbles) // Displays $num$ in HEX format with preceding zeros
+{
+  char tmp[16];
+  char format[128];
 
-     sprintf(format, "%%.%dX", prec);
-     sprintf(tmp, format, num);
-     Serial.print(tmp);
+  sprintf(format, "%%.%dX", nibbles); 
+  sprintf(tmp, format, num);
+  Serial.print(tmp); // will print no more than 2 bytes!
 }
